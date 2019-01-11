@@ -1,0 +1,10 @@
+chain ºÍ intercepter
+
+call.getResponseWithInterceptorChain()
+Chain
+
+
+APP intercept
+okhttp		RetryAndFollowUp£¬Breage£¬Cache£¬Connect
+NET intercept
+		CallServerInterceptor

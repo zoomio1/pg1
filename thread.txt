@@ -1,0 +1,60 @@
+wait
+notify
+
+interrupt
+sleep
+yield
+suspend
+resume
+
+========
+
+判断
+isInterrupted
+isAlive
+
+native：
+wait
+notify
+sleep
+
+组合方法：
+join = sync(thread）{thread.wait()}
+
+synchronized (t1) {
+while (t1.isAlive()) {
+t1.wait(0);
+}
+}
+
+====
+
+
+1.wait 只能在同步块内调用
+2.同步块的锁对象 才可以调用wait
+3.locker。notify 只能在同步块内调用
+4.notify后，当前线程要直到退出同步块了(满足同步块内同一时刻只有一个线程执行的原则)，其他线程才会被唤醒进入同步块
+
+3.X (错觉，是因为locker 为 thread ，且thread 执行run完毕）当一个同步块中有线程等待时，另外一个线程进入同步块，并离开，会有locker.notify 效果（或者locker线程抛出异常 结束也行。。。 = locker线程进入 dead状态）
+
+
+但当 锁对象是一个 线程时。。。。
+如果有多个同步域使用这个 线程t 作为锁对象
+当t执行完毕时
+会对所有使用了 t 作为锁对象的 同步域 中的所有线程 ，执行类似 notifyall 的操作
+这和常规锁对象不同之处
+1.执行完毕时 notifyall 所有的 同步域，在其中wait的线程，将会继续执行（并且在同一个同步块内一起在wait 的线程，都会被唤醒，依次返回wait 的地方继续执行，谁先被调度依然是根据线程调度机制，有一定随机性）
+2.可以在 同步域外 产生 notifyall 的效果（但当你直接在同步域外调用 t。notifyall 会抛出异常）
+
+=============
+
+问题
+
+一个等一个执行完后继续
+一个等多个
+
+多个等一个继续
+
+一个等一个wait后 继续
+一个等一个执行完后 wait
+
