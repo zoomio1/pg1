@@ -127,7 +127,7 @@ CONDITION 表示线程正在等待condition
 
 返回了当前状态，但如果失败？会把Node 的waitStatus = Node.CANCELLED
 
-
+？？？？
 
 ```
 LockSupport.unpark(node.thread);
@@ -136,6 +136,10 @@ LockSupport.unpark(node.thread);
 
 
 
+
+https://blog.csdn.net/qq_32924343/article/details/80042195
+
+https://www.cnblogs.com/qingquanzi/p/8228422.html
 
 ### LockSupport
 
@@ -147,7 +151,7 @@ LockSupport.unpark(Thread t);
 park 可以让线程进入 WAITING 状态，unpark 可以让线程进入RUNNABLE 状态
 
 * 可以不在监视器上下文中使用（不用再 sync 关键字范围内）
-* 类似  Reentrylock ，估计内部维护了一个计数器，可以知道 某线程调用 park 的次数，和对某线程调用 unpark 的次数。只要 park计数 > unpark 计数，线程会一直WAITING, 当park计数<=unpark 计数，线程不会进入WAITING （或者从WAITING 变为 RUNNABLE ）。这意味着可以先unpark 1次，然后线程再park 1次，线程不会出现阻塞的情况
+* 类似  Reentrylock ，估计内部维护了一个计数器，可以知道 某线程调用 park 的次数，和对某线程调用 unpark 的次数。只要 park计数 > unpark 计数，线程会一直WAITING, 当park计数<=unpark 计数，线程不会进入WAITING （或者从WAITING 变为 RUNNABLE ）。这意味着可以先unpark 1次，然后线程再park 1次，线程不会出现阻塞的情况(信号量 PV原语)
 
 
 
